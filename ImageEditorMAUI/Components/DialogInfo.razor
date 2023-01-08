@@ -1,0 +1,17 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText>Application version: @_appVersion</MudText>
+        <MudText>Created by: Temirkhan Amanzhanov</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    private readonly string _appVersion = AppInfo.Current.VersionString;
+    
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

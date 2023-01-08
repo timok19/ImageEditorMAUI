@@ -1,0 +1,52 @@
+﻿<MudContainer Class="bottom-nav-bar" >
+    <MudButtonGroup DisableElevation="true" Color="Color.Dark" Variant="Variant.Filled"
+                    Size="Size.Large" Style="padding-bottom: 1.5rem;">
+        <MudFab Href="/" StartIcon="@Icons.Material.Filled.Image"
+                IconColor="Color.Warning" IconSize="Size.Medium"
+                Class="nav-left-button">
+        </MudFab>
+        
+        <MudFab Href="/edit" StartIcon="@Icons.Material.Filled.Crop"
+                IconColor="Color.Warning" IconSize="Size.Medium"
+                Class="nav-center-button">
+        </MudFab>
+        
+        <MudFab Href="/settings" StartIcon="@Icons.Material.Rounded.Settings"
+                IconColor="Color.Warning" IconSize="Size.Medium"
+                Class="nav-right-button">
+        </MudFab>
+    </MudButtonGroup>
+</MudContainer>
+
+<style>
+    .bottom-nav-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .bottom-nav-bar .nav-center-button {
+        height: 9vh;
+        width: -webkit-fit-content;
+    }
+
+    .bottom-nav-bar .nav-left-button {
+        font-size: 15px; 
+        border-top-left-radius: 10px; 
+        border-bottom-left-radius: 10px;
+        height: 9vh;
+        width: -webkit-fit-content;
+    }
+    
+    .bottom-nav-bar .nav-right-button {
+        font-size: 15px; 
+        border-top-right-radius: 10px; 
+        border-bottom-right-radius: 10px;
+        height: 9vh;
+        width: -webkit-fit-content;
+    }
+</style>

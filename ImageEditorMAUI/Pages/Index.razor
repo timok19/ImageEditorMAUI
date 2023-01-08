@@ -1,0 +1,120 @@
+﻿@page "/"
+
+@if (Images.Count == 0)
+{
+    <div class="text-placeholder">
+        <MudText Style="@($"color: {@Colors.Grey.Darken1}")" Typo="Typo.h6">
+            Add Your Image
+        </MudText>
+    </div>
+
+    <div class="arrow-down">
+        <div class="ico animated">
+            <svg class="svg" style="enable-background:new 0 0 612 612;" viewBox="0 0 612 612" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+                <defs>
+                    <clipPath id="cut-off-arrow">
+                        <circle cx="306" cy="306" r="287"/>
+                    </clipPath>
+        
+                    <filter id="goo">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                        <feBlend in="SourceGraphic" in2="goo" />
+                    </filter>
+       
+                </defs>
+                <path  class="st-arrow" d="M317.5,487.6c0.3-0.3,0.4-0.7,0.7-1.1l112.6-112.6c6.3-6.3,6.3-16.5,0-22.7c-6.3-6.3-16.5-6.3-22.7,0
+          l-86,86V136.1c0-8.9-7.3-16.2-16.2-16.2c-8.9,0-16.2,7.3-16.2,16.2v301.1l-86-86c-6.3-6.3-16.5-6.3-22.7,0
+          c-6.3,6.3-6.3,16.5,0,22.7l112.7,112.7c0.3,0.3,0.4,0.7,0.7,1c0.5,0.5,1.2,0.5,1.7,0.9c1.7,1.4,3.6,2.3,5.6,2.9
+          c0.8,0.2,1.5,0.4,2.3,0.4C308.8,492.6,313.8,491.3,317.5,487.6z"/>
+            </svg>
+        </div>
+    </div>
+}
+else
+{
+    
+    <MudSimpleTable Hover="true" Style="overflow-x: auto;" onclick="@Images.Count">
+        <tbody>
+            @foreach (var image in Images)
+            {
+                <tr>
+                    <td style="padding: 8px; padding-left: 12px;" align="center">
+                        <MudImage Src="@image.ImageURL"
+                            Alt="Added Image"
+                            Class="rounded-lg"
+                            ObjectFit="@ObjectFit.ScaleDown" />
+                    </td>
+                    <td style="padding: 5px" align="center">
+                        <MudText Style="font-size: 11px" Align="Align.Center">
+                            @if (image.File.Name.Length > 10)
+                            {
+                                @(image.File.Name.Substring(0, 2) + "*.")
+                                @image.File.ContentType.Split("/")[1]
+                            }
+                            else
+                            {
+                                @image.File.Name
+                            }
+                        </MudText>
+                    </td>
+                    <td style="padding: 5px" align="center">
+                        <MudText Style="font-size: 11px" Align="Align.Center">
+                            @(Math.Round(image.File.Size / Math.Pow(1000, 2), 2)) MB
+                        </MudText>
+                    </td>
+                    <td style="padding: 10px" align="center">
+                        <MudText Style="font-size: 11px" Align="Align.Center">
+                            @image.File.LastModified.DateTime.ToUniversalTime()
+                        </MudText>
+                    </td>
+                    <td align="center">
+                        <MudCheckBox @bind-Checked="@IsChecked" Dense="false" Color="Color.Warning" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+}
+
+<div class="add-button">
+    @if (Images.Count == 0)
+    {
+        <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+                       Accept=".jpeg,.jpg,.png"
+                       FilesChanged="UploadFiles" 
+                       MaximumFileCount="20"
+                   
+        >
+            <ButtonTemplate>
+                <MudBadge Content="@Images.Count" 
+                          Color="Color.Dark" 
+                          Overlap="true" 
+                          Bordered="true" 
+                          Origin="Origin.TopRight"
+		        >
+                      
+                    <MudFab HtmlTag="label"
+                            Color="Color.Warning"
+                            Icon="@Icons.Material.Filled.Add" Size="Size.Large"
+                            for="@context"/>
+                </MudBadge>
+            </ButtonTemplate>
+        </MudFileUpload>
+    }
+    else
+    {
+         <MudBadge Content="@Images.Count" 
+                          Color="Color.Dark" 
+                          Overlap="true" 
+                          Bordered="true" 
+                          Origin="Origin.TopRight"
+		        >
+            <MudFab Color="Color.Warning" 
+                    StartIcon="@Icons.Material.Filled.Check" 
+                    IconSize="Size.Medium" />
+            
+            
+        </MudBadge>
+    }
+</div>

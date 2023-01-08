@@ -1,0 +1,73 @@
+﻿@inherits LayoutComponentBase
+
+@using ImageEditorMAUI.Components
+@using ImageEditorMAUI.Data.Infrastructure
+@using Microsoft.JSInterop
+
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+<MudThemeProvider IsDarkMode="true"/>
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout Class="mud-theme-dark">
+    <!-- Top part of page -->
+    <MudAppBar Elevation="2" Color="Color.Dark" Dense="false">
+        <div>
+            @if (HrefTextMapping.ContainsKey(_currentHref))
+            {
+                <MudText Color="@Color.Warning" Typo="Typo.h6">
+                    @HrefTextMapping[_currentHref]
+                </MudText>
+            }
+        </div>
+        
+        <MudSpacer/>
+        
+		@if (_currentHref == BaseUrl + "/")
+		{
+            <MudIconButton Icon="@Icons.Material.Filled.Info" 
+                           Color="Color.Warning" 
+                           Edge="Edge.End" OnClick="OpenDialog"/>
+        }
+    </MudAppBar>
+    
+    <!-- Main content -->
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+   
+    <!-- Bottom part of page -->
+    <BottomNavBar/>
+</MudLayout>
+
+@code {
+    private const string BaseUrl = "https://0.0.0.0";
+    private string _currentHref;
+
+    private Dictionary<string, string> HrefTextMapping { get; } = new()
+    {
+        { $"{BaseUrl}/", "Add Image" },
+        { $"{BaseUrl}/edit", "Edit Image" },
+        { $"{BaseUrl}/settings", "Settings" }
+    };
+
+    protected override void OnInitialized()
+    {
+        _currentHref = NavigationManager.Uri;
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        _currentHref = e.Location;
+        StateHasChanged();
+    }
+    
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<DialogInfo>("Application Info", options);
+    }
+}
